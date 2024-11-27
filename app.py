@@ -17,7 +17,7 @@ st.markdown("""
             font-size: 48px;
             font-family: 'Georgia', serif;
             text-align: center;
-            color: #2c3e50;
+            color: #013220;
             margin-top: 10px;
         }
         .sub-header {
