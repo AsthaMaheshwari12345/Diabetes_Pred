@@ -6,77 +6,85 @@ from sklearn.model_selection import train_test_split
 
 df = pd.read_csv(r"./diabetes.csv")
 
-# Updated CSS for the new layout
+# Completely revamped CSS for a new design
 st.markdown("""
     <style>
+        /* General body styling */
         body {
-            background-color: #f5f7fa;
+            background-color: #f0f4f8;
         }
         .main-header {
-            font-size: 42px;
-            font-family: 'Verdana', sans-serif;
+            font-size: 48px;
+            font-family: 'Georgia', serif;
             text-align: center;
-            color: #34495e;
-            margin-top: 20px;
+            color: #2c3e50;
+            margin-top: 10px;
         }
         .sub-header {
             font-size: 20px;
-            font-family: 'Verdana', sans-serif;
-            color: #7f8c8d;
+            font-family: 'Arial', sans-serif;
             text-align: center;
+            color: #7f8c8d;
         }
         .divider {
             border: none;
-            border-top: 3px solid #ecf0f1;
+            border-top: 2px solid #dfe6e9;
             margin: 20px 0;
         }
         .highlight {
             font-size: 18px;
             font-weight: bold;
-            color: #2ecc71;
+            color: #16a085;
         }
-        .sidebar-header {
-            font-size: 22px;
-            font-family: 'Verdana', sans-serif;
-            color: #2c3e50;
+        /* Sidebar styles */
+        .css-1aumxhk {
+            background-color: #2c3e50;
+        }
+        .sidebar-title {
+            font-size: 24px;
+            font-family: 'Georgia', serif;
+            color: #ecf0f1;
         }
         .sidebar-description {
             font-size: 14px;
-            color: #7f8c8d;
+            color: #bdc3c7;
         }
-        .btn-primary {
-            background-color: #2c3e50;
-            color: #ffffff;
+        /* Button styles */
+        .stButton>button {
+            background-color: #1abc9c;
+            color: white;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: 8px;
             padding: 10px;
-            text-align: center;
+            border: none;
         }
-        .btn-primary:hover {
-            background-color: #34495e;
-            color: #ffffff;
+        .stButton>button:hover {
+            background-color: #16a085;
+            color: white;
         }
+        /* Result text styling */
         .result-text {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
-            color: #e74c3c;
             text-align: center;
         }
         .result-success {
-            font-size: 20px;
-            font-weight: bold;
             color: #2ecc71;
-            text-align: center;
+        }
+        .result-danger {
+            color: #e74c3c;
         }
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<h1 class='main-header'>Diabetes Risk Prediction</h1>", unsafe_allow_html=True)
-st.markdown("<p class='sub-header'>Use your health data to check your diabetes risk.</p>", unsafe_allow_html=True)
+# Main title and subtitle
+st.markdown("<h1 class='main-header'>Diabetes Risk Predictor</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub-header'>Analyze your health data to check your diabetes risk.</p>", unsafe_allow_html=True)
 st.markdown("<hr class='divider'>", unsafe_allow_html=True)
 
-st.sidebar.markdown("<h2 class='sidebar-header'>Health Information</h2>", unsafe_allow_html=True)
-st.sidebar.markdown("<p class='sidebar-description'>Enter your health parameters below.</p>", unsafe_allow_html=True)
+# Sidebar header and description
+st.sidebar.markdown("<h2 class='sidebar-title'>Health Data Input</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<p class='sidebar-description'>Please adjust the sliders to provide your health data.</p>", unsafe_allow_html=True)
 
 def get_user_input():
     pregnancies = st.sidebar.slider('Pregnancies', min_value=0, max_value=17, value=3, format="%d")
@@ -104,9 +112,11 @@ def get_user_input():
 
 user_data = get_user_input()
 
-st.markdown("<h2 style='color: #34495e;'>Overview of Entered Data</h2>", unsafe_allow_html=True)
+# Displaying the entered data
+st.markdown("<h2 style='color: #2c3e50;'>Your Entered Data</h2>", unsafe_allow_html=True)
 st.dataframe(user_data)
 
+# Data preparation and model training
 x = df.drop(['Outcome'], axis=1)
 y = df['Outcome']
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
@@ -114,22 +124,24 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 rf = RandomForestClassifier()
 rf.fit(x_train, y_train)
 
-if st.button('Check Risk', key="primary"):
-    st.markdown("<h3>Analyzing data...</h3>", unsafe_allow_html=True)
+# Button to trigger prediction
+if st.button('Predict Risk'):
+    st.markdown("<h3 style='text-align: center;'>Analyzing your data...</h3>", unsafe_allow_html=True)
     progress = st.progress(0)
     for percent in range(100):
         progress.progress(percent + 1)
 
     prediction = rf.predict(user_data)
     
+    # Display prediction results
     st.markdown("<hr class='divider'>", unsafe_allow_html=True)
-    st.markdown("<h2>Prediction</h2>", unsafe_allow_html=True)
     if prediction[0] == 0:
-        st.markdown("<p class='result-success'>You are not at risk of diabetes.</p>", unsafe_allow_html=True)
+        st.markdown("<p class='result-text result-success'>You are not at risk of diabetes.</p>", unsafe_allow_html=True)
     else:
-        st.markdown("<p class='result-text'>You are at risk of diabetes.</p>", unsafe_allow_html=True)
+        st.markdown("<p class='result-text result-danger'>You are at risk of diabetes.</p>", unsafe_allow_html=True)
     
+    # Display model accuracy
     accuracy = accuracy_score(y_test, rf.predict(x_test)) * 100
-    st.markdown(f"<p style='color: #34495e;'>Model Accuracy: {accuracy:.2f}%</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align: center; font-size: 18px; color: #7f8c8d;'>Model Accuracy: {accuracy:.2f}%</p>", unsafe_allow_html=True)
 else:
-    st.markdown("<h3>Enter your details and click 'Check Risk'</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center;'>Enter your details and click 'Predict Risk' to see results.</h3>", unsafe_allow_html=True)
