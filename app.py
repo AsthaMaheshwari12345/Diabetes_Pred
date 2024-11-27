@@ -118,4 +118,3 @@ if st.button('🍀 Check My Risk', key="primary", help="Click to predict diabete
 
 else:
     st.markdown("<h3 style='text-align: center;'>👈 Enter your data and click 'Check My Risk'</h3>", unsafe_allow_html=True)
-```
