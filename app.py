@@ -24,7 +24,7 @@ st.markdown("""
             font-size: 20px;
             font-family: 'Arial', sans-serif;
             text-align: center;
-            color: #7f8c8d;
+            color: #013220;
         }
         .divider {
             border: none;
@@ -34,7 +34,7 @@ st.markdown("""
         .highlight {
             font-size: 18px;
             font-weight: bold;
-            color: #16a085;
+            color: #013220;
         }
         /* Sidebar styles */
         .css-1aumxhk {
@@ -43,11 +43,11 @@ st.markdown("""
         .sidebar-title {
             font-size: 24px;
             font-family: 'Georgia', serif;
-            color: #ecf0f1;
+            color: #013220;
         }
         .sidebar-description {
             font-size: 14px;
-            color: #bdc3c7;
+            color: #013220;
         }
         /* Button styles */
         .stButton>button {
@@ -69,10 +69,10 @@ st.markdown("""
             text-align: center;
         }
         .result-success {
-            color: #2ecc71;
+            color: #013220;
         }
         .result-danger {
-            color: #e74c3c;
+            color: #013220;
         }
     </style>
 """, unsafe_allow_html=True)
